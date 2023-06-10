@@ -210,12 +210,12 @@ if __name__ == "__main__":
     rpm = 0
     rps = 0
     
-    threading.Thread(target=rpsm_loop).start()
+threading.Thread(target=rpsm_loop).start()
     
     
     while True:
         device = random.choice(devices)
 
-    if eval("threading.active_count() < 100 # don't change count or u will kill devices and ruin fun for others"):
-        did, iid, cdid, openudid = device.split(':')
-        eval('threading.Thread(target=send,args=[did,iid,cdid,openudid]).start()')
+        if eval("threading.active_count() < 100 # don't change count or u will kill devices and ruin fun for others"):
+           did, iid, cdid, openudid = device.split(':')
+           eval('threading.Thread(target=send,args=[did,iid,cdid,openudid]).start()')
