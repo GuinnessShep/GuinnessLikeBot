@@ -245,26 +245,38 @@ def adjust_proxy_settings():
         proxies = []
         print("Proxy settings cleared.")
 
+import time
+import os
+from colorama import Fore, Back, Style, init
+
+# Initialize colorama
+init()
+
+# Rainbow color codes.
+color_list = [Fore.RED, Fore.YELLOW, Fore.GREEN, Fore.CYAN, Fore.BLUE, Fore.MAGENTA]
+
+def print_rainbow_text(text):
+    color_index = 0
+    for ch in text:
+        print(color_list[color_index % len(color_list)] + ch, end='', flush=True)
+        color_index += 1
+    print(Style.RESET_ALL)
 
 def menu():
     os.system("cls" if os.name == "nt" else "clear")
-    set_title("Guinness Like Bot")
     txt = """\n\n
     Guinness Like Bot by @guinnessgshep \n"""
-    rainbow_text = Colorate.Vertical(
-        Colors.rainbow(), Write.Center(txt)
-    )
-    animated_text = Colorate.Animation(
-        rainbow_text, Colors.white_to_pink, interval=0.05
-    )
-    print(animated_text)
-    print("Select an option:")
-    print("1. Adjust threading (current: {})".format(thread_count))
-    print("2. Adjust speed (current: {})".format(sleep_time))
-    print("3. Adjust number of processes (current: {})".format(process_count))
-    print("4. Adjust proxy settings")
-    print("5. Start viewbot")
-    print("6. Quit")
+    while True:
+        print_rainbow_text(txt)
+        time.sleep(1)
+        os.system("cls" if os.name == "nt" else "clear")
+        print("Select an option:")
+        print("1. Adjust threading (current: {})".format(thread_count))
+        print("2. Adjust speed (current: {})".format(sleep_time))
+        print("3. Adjust number of processes (current: {})".format(process_count))
+        print("4. Adjust proxy settings")
+        print("5. Start viewbot")
+        print("6. Quit")
 
 
 if __name__ == "__main__":
