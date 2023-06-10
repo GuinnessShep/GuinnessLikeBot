@@ -252,7 +252,7 @@ def menu():
     txt = """\n\n
     Guinness Like Bot by @guinnessgshep \n"""
     rainbow_text = Colorate.Vertical(
-        Colors.Rainbow(), Write.Center(txt)
+        Colors.rainbow(), Write.Center(txt)
     )
     animated_text = Colorate.Animation(
         rainbow_text, Colors.white_to_pink, interval=0.05
