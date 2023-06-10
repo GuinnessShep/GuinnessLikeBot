@@ -1,3 +1,4 @@
+import sys
 import uuid
 
 def generate_device_identifiers(num_identifiers):
@@ -16,8 +17,12 @@ def save_identifiers_to_file(identifiers):
         for identifier in identifiers:
             file.write(identifier + "\n")
 
-# Prompt the user for the number of identifiers to generate
-num_identifiers = int(input("How many identifiers do you want to generate? "))
+# Check if a command line argument is provided
+if len(sys.argv) > 1:
+    num_identifiers = int(sys.argv[1])
+else:
+    # Prompt the user for the number of identifiers to generate
+    num_identifiers = int(input("How many identifiers do you want to generate? "))
 
 # Generate the identifiers
 identifiers = generate_device_identifiers(num_identifiers)
