@@ -52,57 +52,6 @@ def proxy_sources():
             "https://raw.githubusercontent.com/prxchk/proxy-list/main/http.txt",
             "https://raw.githubusercontent.com/ALIILAPRO/Proxy/main/http.txt",
         ],
-        "SOCKS4": [
-            "https://api.proxyscrape.com/v2/?request=displayproxies&protocol=socks4",
-            "https://api.proxyscrape.com/?request=displayproxies&proxytype=socks4&country=all",
-            "https://api.openproxylist.xyz/socks4.txt",
-            "https://proxyspace.pro/socks4.txt",
-            "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/socks4.txt",
-            "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies_anonymous/socks4.txt",
-            "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies-socks4.txt",
-            "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/socks4.txt",
-            "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks4.txt",
-            "https://raw.githubusercontent.com/roosterkid/openproxylist/main/SOCKS4_RAW.txt",
-            "https://proxyspace.pro/socks4.txt",
-            "https://www.proxy-list.download/api/v1/get?type=socks4",
-            "https://raw.githubusercontent.com/HyperBeats/proxy-list/main/socks4.txt",
-            "https://raw.githubusercontent.com/mmpx12/proxy-list/master/socks4.txt",
-            "https://raw.githubusercontent.com/saschazesiger/Free-Proxies/master/proxies/socks4.txt",
-            "https://raw.githubusercontent.com/B4RC0DE-TM/proxy-list/main/SOCKS4.txt",
-            "https://raw.githubusercontent.com/rdavydov/proxy-list/main/proxies/socks4.txt",
-            "https://raw.githubusercontent.com/rdavydov/proxy-list/main/proxies_anonymous/socks4.txt",
-            "https://raw.githubusercontent.com/zevtyardt/proxy-list/main/socks4.txt",
-            "https://raw.githubusercontent.com/MuRongPIG/Proxy-Master/main/socks4.txt",
-            "https://raw.githubusercontent.com/Zaeem20/FREE_PROXIES_LIST/master/socks4.txt",
-            "https://raw.githubusercontent.com/prxchk/proxy-list/main/socks4.txt",
-            "https://raw.githubusercontent.com/ALIILAPRO/Proxy/main/socks4.txt",
-        ],
-        "SOCKS5": [
-            "https://raw.githubusercontent.com/B4RC0DE-TM/proxy-list/main/SOCKS5.txt",
-            "https://raw.githubusercontent.com/saschazesiger/Free-Proxies/master/proxies/socks5.txt",
-            "https://raw.githubusercontent.com/mmpx12/proxy-list/master/socks5.txt",
-            "https://raw.githubusercontent.com/HyperBeats/proxy-list/main/socks5.txt",
-            "https://api.openproxylist.xyz/socks5.txt",
-            "https://api.proxyscrape.com/?request=displayproxies&proxytype=socks5",
-            "https://api.proxyscrape.com/v2/?request=displayproxies&protocol=socks5",
-            "https://proxyspace.pro/socks5.txt",
-            "https://raw.githubusercontent.com/manuGMG/proxy-365/main/SOCKS5.txt",
-            "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/socks5.txt",
-            "https://raw.githubusercontent.com/monosans/proxy-list/main/proxies_anonymous/socks5.txt",
-            "https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/socks5.txt",
-            "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies-socks5.txt",
-            "https://raw.githubusercontent.com/roosterkid/openproxylist/main/SOCKS5_RAW.txt",
-            "https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks5.txt",
-            "https://raw.githubusercontent.com/hookzof/socks5_list/master/proxy.txt",
-            "https://raw.githubusercontent.com/rdavydov/proxy-list/main/proxies/socks5.txt",
-            "https://raw.githubusercontent.com/rdavydov/proxy-list/main/proxies_anonymous/socks5.txt",
-            "https://raw.githubusercontent.com/zevtyardt/proxy-list/main/socks5.txt",
-            "https://raw.githubusercontent.com/MuRongPIG/Proxy-Master/main/socks5.txt",
-            "https://raw.githubusercontent.com/Zaeem20/FREE_PROXIES_LIST/master/socks5.txt",
-            "https://raw.githubusercontent.com/prxchk/proxy-list/main/socks5.txt",
-            "https://raw.githubusercontent.com/ALIILAPRO/Proxy/main/socks5.txt",
-            "https://spys.me/socks.txt",
-        ],
         "HTTPS": [
             "http://sslproxies.org",
             "https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies-https.txt",
@@ -205,10 +154,10 @@ def parameters():
 def remove_duplicate_proxies(protocol):
     # Read in the text document
     try:
-        with open(f'scraped/{protocol}.txt', 'r') as file:
+        with open(f'proxies.txt', 'r') as file:
             proxies_data = file.read()
     except IOError:
-        print(f"Error: Could not read {protocol}.txt")
+        print(f"Error: Could not read proxies.txt")
         return
 
     # Split the proxies into a list and remove duplicates
@@ -217,7 +166,7 @@ def remove_duplicate_proxies(protocol):
 
     # Overwrite the original text document with the unique proxies
     try:
-        with open(f'scraped/{protocol}.txt', 'w') as file:
+        with open(f'proxies.txt', 'w') as file:
             for proxy in unique_proxies:
                 file.write(proxy + '\n')
     except IOError:
@@ -226,11 +175,11 @@ def remove_duplicate_proxies(protocol):
     
 def regularize_proxies(protocol):
     try:
-        with open(f'scraped/{protocol}.txt', 'r') as file:
+        with open(f'proxies.txt', 'r') as file:
             text_data = file.read()
             lines = file.readlines()
     except IOError:
-        print(f"Error: Could not read {protocol}.txt")
+        print(f"Error: Could not read proxies.txt")
         return
 
     # Define a regex pattern to match proxies
@@ -239,7 +188,7 @@ def regularize_proxies(protocol):
 
     # Overwrite the original text document with the regularized proxies
     try:
-        with open(f'scraped/{protocol}.txt', 'w') as file:
+        with open(f'{protocol}.txt', 'w') as file:
             file.write('\n'.join(lines)) #remove empty lines
             for proxy in proxies:
                 file.write(proxy + '\n')
@@ -252,19 +201,13 @@ def regularize_proxies(protocol):
 
 ## checking portion
 
-def SOCKS4_check(site, timeout, rand_UA):
-    pass
-
-def SOCKS5_check(site, timeout, rand_UA):
-    pass
-
 def HTTP_check(site, timeout, rand_UA):
     from tqdm import tqdm
     global http_valid_proxies
     global http_proxies
     global http_percentage
     
-    PROXY_LIST_FILE = 'scraped/HTTP.txt'
+    PROXY_LIST_FILE = 'proxies.txt'
     TEST_URL = site
     TIMEOUT = timeout
 
@@ -306,7 +249,7 @@ def HTTPS_check(site, timeout, rand_UA):
     global https_proxies
     global https_percentage
     
-    PROXY_LIST_FILE = 'scraped/HTTPS.txt'
+    PROXY_LIST_FILE = 'proxies.txt'
     TEST_URL = site
     TIMEOUT = timeout
 
@@ -357,16 +300,10 @@ def scrape_url(url, proxy_type, error_log):
             soup = BeautifulSoup(response.content, 'html.parser')
             scraped_data = soup.get_text()
             if proxy_type == "HTTP":
-                with open("scraped/HTTP.txt", "a") as file_http:
-                    file_http.write(scraped_data + '\n')
-            elif proxy_type == "SOCKS4":
-                with open("scraped/SOCKS4.txt", "a") as file_socks4:
-                    file_socks4.write(scraped_data + '\n')
-            elif proxy_type == "SOCKS5":
-                with open("scraped/SOCKS5.txt", "a") as file_socks5:
-                    file_socks5.write(scraped_data + '\n')
+                with open("proxies.txt", "a") as file_http:
+                    file_http.write(scraped_data + '\n')            
             elif proxy_type == "HTTPS":
-                with open("scraped/HTTPS.txt", "a") as file_https:
+                with open("proxies.txt", "a") as file_https:
                     file_https.write(scraped_data + '\n')
         else:
             error_log.write(f"Could not access: {url}\n")
@@ -431,7 +368,7 @@ def scraping_handler(error_log, site, timeout):
     print(" " * left_space + info + " " * right_space)
     print()
 
-    protocols = ["SOCKS4", "SOCKS5", "HTTP", "HTTPS"]
+    protocols = ["HTTP", "HTTPS"]
     for protocol in tqdm(protocols, desc="Regularizing Proxies", ascii=" #", unit= " prox"):
         regularize_proxies(protocol)
     for protocol in tqdm(protocols, desc="Removing Duplicates", ascii=" #", unit= " prox"):
@@ -469,14 +406,8 @@ def exit_con():
     print(vanity_line)
     exit()
 
-def checking_handler(site, timeout, protocol, rand_UA):
-    if protocol == "SOCKS4":
-        with suppress(Exception):
-            SOCKS4_check(site, timeout, rand_UA)
-    elif protocol == "SOCKS5":
-        with suppress(Exception):
-            SOCKS5_check(site, timeout, rand_UA)
-    elif protocol == "HTTP":
+def checking_handler(site, timeout, protocol, rand_UA):    
+    if protocol == "HTTP":
         with suppress(Exception):
             HTTP_check(site, timeout, rand_UA)
     elif protocol == "HTTPS":
@@ -497,30 +428,12 @@ def main():
         filterwarnings("ignore", category=UserWarning, message=".*looks like you're parsing an XML document using an HTML parser.*")
         site = "http://httpbin.org/ip"
         # initialize files
-        with open("scraped/HTTP.txt", "w"), open("scraped/SOCKS4.txt", "w"), open("scraped/SOCKS5.txt", "w"), open("scraped/HTTPS.txt", "w"), open("error.log", "w") as error_log:
+        with open("proxies.txt", "w"), open("proxies.txt", "w"), open("error.log", "w") as error_log:
             init_main(error_log, site, timeout)
     except KeyboardInterrupt:
         system('cls' if name == 'nt' else 'clear')
         exit_con()
-
-def run_update_script():
-    current_os = platform_system()
-    if (
-        current_os == 'Linux'
-        or current_os != 'Windows'
-        and current_os == 'Darwin'
-    ):
-        # Change the permissions of the update script to make it executable
-        run(['chmod', '+x', 'update.sh'])
-        # Run the update script
-        run(['./update.sh'])
-    elif current_os == 'Windows':
-        # Run the update batch script
-        run(['update.bat'])
-    else:
-        print('Unsupported operating system.')
-
-    exit_con()
+    
 
 if __name__ == '__main__':
     global vanity_line
@@ -540,7 +453,6 @@ if __name__ == '__main__':
     if args.u:
         system('cls' if name == 'nt' else 'clear')
         print(vanity_line)
-        run_update_script()
 
     total_sources = 0
     accessed_sources = 0
