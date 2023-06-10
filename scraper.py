@@ -266,8 +266,7 @@ def terminalthread():
         terminal(f"| Remaining sites {len(sitelist)} | active threads {threadcount} | Proxies {proxycount} | Time {time.time()-start:.2f}s")
 
 def printLogo():
-    logo = """
-
+    logo = r"""
            ___    _                _ __                   __   __    _        __      __    _  _         
    o O O  / __|  | |_      ___    | '_ \   ___      o O O \ \ / /   (_)      / _|    / _|  | || |        
   o       \__ \  | ' \    / -_)   | .__/  (_-<     o       \ V /    | |     |  _|   |  _|   \_, |        
@@ -285,7 +284,6 @@ def printLogo():
 
            """
 
-                    
     os.system("cls")
     print(Colorate.Diagonal(Colors.DynamicMIX((Colors.dark_gray, Colors.StaticMIX((Colors.purple, Colors.blue)))), Center.XCenter(logo)))
 
