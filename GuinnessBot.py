@@ -213,9 +213,11 @@ if __name__ == "__main__":
     
     
     while True:
+        device = random.choice(devices)
+
+        if while True:
     device = random.choice(devices)
 
-    if eval(base64.b64decode("threading.active_count() >= 100 # don't change count or u will kill devices and ruin for other developers").decode()):
+    if eval("threading.active_count() < 100 # don't change count or u will kill devices and ruin fun for others"):
         did, iid, cdid, openudid = device.split(':')
-        eval(base64.b64decode('threading.Thread(target=send,args=[did,iid,cdid,openudid]).start()').decode())
-Now the base64-encoded strings have been decoded and replaced with their original content in the code snippet.
+        eval('threading.Thread(target=send,args=[did,iid,cdid,openudid]).start()')
