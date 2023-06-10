@@ -70,37 +70,38 @@ def send(__device_id, __install_id, cdid, openudid):
             params = urlencode(
                                 {
                                     "os_api": "25",
-                                    "device_type": random.choice(__devices),
+                                    "device_type": "random.choice(__devices)",
                                     "ssmix": "a",
-                                    "manifest_version_code": version,
+                                    "manifest_version_code": "version",
                                     "dpi": "240",
-                                    "region": "VN",
-                                    "carrier_region": "VN",
+                                    "region": "US",
+                                    "carrier_region": "US",
                                     "app_name": "musically_go",
                                     "version_name": "27.2.4",
-                                    "timezone_offset": "-28800",
+                                    "timezone_offset": "PST",
                                     "ab_version": "27.2.4",
                                     "ac2": "wifi",
                                     "ac": "wifi",
                                     "app_type": "normal",
                                     "channel": "googleplay",
-                                    "update_version_code": version,
+                                    "update_version_code": "version",
                                     "device_platform": "android",
-                                    "iid": __install_id,
+                                    "iid": "__install_id",
                                     "build_number": "27.2.4",
-                                    "locale": "vi",
-                                    "op_region": "VN",
-                                    "version_code": version,
-                                    "timezone_name": "Asia/Ho_Chi_Minh",
-                                    "device_id": __device_id,
-                                    "sys_region": "VN",
-                                    "app_language": "vi",
+                                    "locale": "en",
+                                    "op_region": "US",
+                                    "version_code": "version",
+                                    "timezone_name": "America/Los_Angeles",
+                                    "device_id": "__device_id",
+                                    "sys_region": "US",
+                                    "app_language": "en",
                                     "resolution": "720*1280",
                                     "device_brand": "samsung",
-                                    "language": "vi",
+                                    "language": "en",
                                     "os_version": "7.1.2",
                                     "aid": "1340"
                                 }
+
         )
             payload = f"item_id={__aweme_id}&play_delta=1"
             sig     = Gorgon(params=params, cookies=None, data=None, unix=int(time.time())).get_value()
@@ -137,7 +138,7 @@ def rpsm_loop():
     global rps, rpm
     while True:
         initial = reqs
-        time.sleep(1.5)
+        time.sleep(1)
         rps = round((reqs - initial) / 1.5, 1)
         rpm = round(rps * 60, 1)
 
