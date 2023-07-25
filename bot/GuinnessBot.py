@@ -167,7 +167,7 @@ if __name__ == "__main__":
     with open('devices.txt', 'r') as f:
         devices = f.read().splitlines()
     
-    with open('../config.json', 'r') as f:
+    with open('config.json', 'r') as f:
         config = json.load(f)
     if config["proxy"]['proxyscrape']:
         fetch_proxies()
