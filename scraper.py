@@ -172,7 +172,7 @@ def parameters():
 def remove_duplicate_proxies(protocol):
     # Read in the text document
     try:
-        with open(f'proxies.txt', 'r') as file:
+        with open(f'../bot/proxies.txt', 'r') as file:
             proxies_data = file.read()
     except IOError:
         print(f"Error: Could not read proxies.txt")
@@ -184,7 +184,7 @@ def remove_duplicate_proxies(protocol):
 
     # Overwrite the original text document with the unique proxies
     try:
-        with open(f'proxies.txt', 'w') as file:
+        with open(f'../bot/proxies.txt', 'w') as file:
             for proxy in unique_proxies:
                 file.write(proxy + '\n')
     except IOError:
@@ -193,7 +193,7 @@ def remove_duplicate_proxies(protocol):
     
 def regularize_proxies(protocol):
     try:
-        with open(f'proxies.txt', 'r') as file:
+        with open(f'../bot/proxies.txt', 'r') as file:
             text_data = file.read()
             lines = file.readlines()
     except IOError:
@@ -225,7 +225,7 @@ def HTTP_check(site, timeout, rand_UA):
     global http_proxies
     global http_percentage
     
-    PROXY_LIST_FILE = 'proxies.txt'
+    PROXY_LIST_FILE = '../bot/proxies.txt'
     TEST_URL = site
     TIMEOUT = timeout
 
@@ -267,7 +267,7 @@ def HTTPS_check(site, timeout, rand_UA):
     global https_proxies
     global https_percentage
     
-    PROXY_LIST_FILE = 'proxies.txt'
+    PROXY_LIST_FILE = '../bot/proxies.txt'
     TEST_URL = site
     TIMEOUT = timeout
 
@@ -318,10 +318,10 @@ def scrape_url(url, proxy_type, error_log):
             soup = BeautifulSoup(response.content, 'html.parser')
             scraped_data = soup.get_text()
             if proxy_type == "HTTP":
-                with open("proxies.txt", "a") as file_http:
+                with open("../bot/proxies.txt", "a") as file_http:
                     file_http.write(scraped_data + '\n')            
             elif proxy_type == "HTTPS":
-                with open("proxies.txt", "a") as file_https:
+                with open("../bot/proxies.txt", "a") as file_https:
                     file_https.write(scraped_data + '\n')
         else:
             error_log.write(f"Could not access: {url}\n")
@@ -446,7 +446,7 @@ def main():
         filterwarnings("ignore", category=UserWarning, message=".*looks like you're parsing an XML document using an HTML parser.*")
         site = "http://httpbin.org/ip"
         # initialize files
-        with open("proxies.txt", "w"), open("proxies.txt", "w"), open("error.log", "w") as error_log:
+        with open("../bot/proxies.txt", "w"), open("../bot/proxies.txt", "w"), open("error.log", "w") as error_log:
             init_main(error_log, site, timeout)
     except KeyboardInterrupt:
         system('cls' if name == 'nt' else 'clear')
