@@ -1,5 +1,31 @@
 @echo off
 
+REM Check if Chocolatey is installed
+choco -v 2>NUL
+if %errorlevel% neq 0 (
+    echo Chocolatey is not installed. Installing Chocolatey...
+
+    REM Download and install Chocolatey
+    @powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin
+
+    echo Chocolatey installed successfully.
+)
+
+REM Check if Git is installed
+git --version 2>NUL
+if %errorlevel% neq 0 (
+    echo Git is not installed. Installing Git...
+    
+    REM Install Git
+    choco install git -y
+
+    echo Git installed successfully.
+)
+
+REM Clone Git repository
+git clone https://github.com/GuinnessShep/GuinnessLikeBot
+cd GuinnessLikeBot
+
 REM Check if Python 3 is installed
 python --version 2>NUL
 if %errorlevel% neq 0 (
@@ -24,10 +50,15 @@ REM Install packages from requirements.txt
 python -m pip install -r requirements.txt
 
 REM Run the Python scripts
-python GenerateDevices.py 50000
-python scraper.py
-python pl.py
-python GuinnessBot.py
+python bot/GenerateDevices.py 50000
+
+SET /P USEPROXIES="Would you like to use proxies? (Y/N) "
+IF /I "%USEPROXIES%" NEQ "N" (
+    python proxy/scraper.py
+    python proxy/pl.py
+)
+
+python bot/GuinnessBot.py
 
 REM Pause the script to keep the console window open
 pause
