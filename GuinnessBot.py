@@ -178,7 +178,7 @@ if __name__ == "__main__":
     os.system("cls" if os.name == "nt" else "clear")
     set_title("Guinness Shepherd")
     txt = """\n\n
-    TikTok Viewbot by @Trần Công \n"""
+    TikTok Viewbot by @guinnessgshep \n"""
     print(
         Colorate.Vertical(
             Colors.DynamicMIX((Col.light_blue, Col.purple)), Center.XCenter(txt)
