@@ -23,7 +23,7 @@ echo "Installing Python packages..."
 python3 -m pip install console httpx pyyaml pystyle
 # Install requirements from requirements.txt
 echo "Installing requirements..."
-python3 -m pip install -r requirements.txt
+python3 -m pip install -r bot/requirements.txt
 # Ask for proxy usage
 read -p "Do you want to use proxies? [y/n] " use_proxies
 # Run Python scripts
