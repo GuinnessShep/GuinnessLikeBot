@@ -12,7 +12,7 @@ python3 -m pip install console httpx pyyaml pystyle
 python3 -m pip install -r requirements.txt
 
 # Run Python scripts
-python3 GenerateDevices.py 50000
-python3 scraper.py
-python3 pl.py
-python3 GuinnessBot.py
+python3 bot/GenerateDevices.py 50000
+python3 proxy/scraper.py
+python3 proxy/pl.py
+python3 bot/GuinnessBot.py
