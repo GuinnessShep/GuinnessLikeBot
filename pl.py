@@ -1298,7 +1298,7 @@ if __name__ == "__main__":
 
     pt = os.path.dirname(__file__)
 
-    good = os.path.join(pt, "proxy/proxies.txt")
+    good = os.path.join(pt, "../bot/proxies.txt")
 
     asyncio.run(main())
 
