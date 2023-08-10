@@ -184,8 +184,8 @@ if __name__ == "__main__":
     print("\033]0;Guinness Shepherd\007")
     #set_title("Guinness Shepherd")
 
-    txt = "\n\nTikTok Viewbot by @guinnessgshep \n"
-    print(Colorate.Vertical(Colors.DynamicMIX((Col.light_blue, Col.purple)), Center.XCenter(txt)))
+    #txt = "\n\nTikTok Viewbot by @guinnessgshep \n"
+    #print(Colorate.Vertical(Colors.DynamicMIX((Col.light_blue, Col.purple)), Center.XCenter(txt)))
     console.print("\n\n[bold blue on white]TikTok Viewbot by @guinnessgshep[/bold blue on white]\n")
     try:
         video = input('Enter Video URL -> ')
