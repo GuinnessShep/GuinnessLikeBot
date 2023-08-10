@@ -51,8 +51,7 @@ jobs:
 
     - name: Install Python dependencies
       run: |
-        python3 -m pip install console httpx pyyaml pystyle
-        python3 -m pip install -r $GITHUB_WORKSPACE/bot/requirements.txt
+        python3 -m pip install console httpx pyyaml pystyle beautifulsoup4 pystylerequests tqdm contextlib3 alive-progress colorama rich data
 
     - name: Run GenerateDevices script and provide input
       run: |
