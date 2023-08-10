@@ -52,7 +52,7 @@ jobs:
     - name: Install Python dependencies
       run: |
         python3 -m pip install console httpx pyyaml pystyle
-        python3 -m pip install -r bot/requirements.txt
+        python3 -m pip install -r $GITHUB_WORKSPACE/bot/requirements.txt
 
     - name: Run GenerateDevices script and provide input
       run: |
