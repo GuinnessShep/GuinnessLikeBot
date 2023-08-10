@@ -122,7 +122,7 @@ def send(__device_id, __install_id, cdid, openudid):
             try:
                 if response.json()['status_code'] == 0:
                     _lock.acquire()
-                    print(Colorate.Horizontal(Colors.purple_to_red, f'TikTok Viewbot by @guinnessgshep^| success: {success} fails: {fails} reqs: {reqs} rps: {rps} rpm: {rpm}'))
+                    print(Colorate.Horizontal(Colors.purple_to_red, f'TikTok Viewbot by @guinnessgshep | success: {success} fails: {fails} reqs: {reqs} rps: {rps} rpm: {rpm}'))
                     success += 1
                     _lock.release()
             except:
