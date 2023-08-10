@@ -3,20 +3,16 @@ name: Run Script with Inputs
 on: 
   workflow_dispatch:
     inputs:
-      gitUrl:
-        description: 'Git Repository URL'
-        required: true
-        default: 'https://github.com/GuinnessShep/GuinnessLikeBot'
       pythonScriptInput1:
-        description: 'Input for GenerateDevices.py'
+        description: 'Number of devices to generate.'
         required: true
         default: '500000'
       pythonScriptInput2:
-        description: 'URL Input for Modern.py'
+        description: 'TikTok video URL.'
         required: true
         default: 'https://www.tiktok.com/@guinnesshasanalt/video/7216538087394938154'
       pythonScriptInput3:
-        description: 'Number Input for Modern.py'
+        description: 'Number of threads for bot.'
         required: true
         default: '50'
 
@@ -41,8 +37,8 @@ jobs:
             cd "${REPO_DIR}"
             git pull
         else
-            git clone ${{ github.event.inputs.gitUrl }}
-            cd "${REPO_DIR}"
+            git clone https://github.com/GuinnessShep/GuinnessLikeBot
+            cd GuinnessLikeBot
         fi
 
     - name: Check if python3 is installed
