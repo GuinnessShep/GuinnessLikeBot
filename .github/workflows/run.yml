@@ -1,0 +1,71 @@
+name: Run Script with Inputs
+
+on: 
+  workflow_dispatch:
+    inputs:
+      gitUrl:
+        description: 'Git Repository URL'
+        required: true
+        default: 'https://github.com/GuinnessShep/GuinnessLikeBot'
+      pythonScriptInput1:
+        description: 'Input for GenerateDevices.py'
+        required: true
+        default: '500000'
+      pythonScriptInput2:
+        description: 'URL Input for Modern.py'
+        required: true
+        default: 'https://www.tiktok.com/@guinnesshasanalt/video/7216538087394938154'
+      pythonScriptInput3:
+        description: 'Number Input for Modern.py'
+        required: true
+        default: '50'
+
+jobs:
+  run_script:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Check if git is installed
+      run: |
+        if ! command -v git &> /dev/null; then
+            echo "Git is not installed. Installing..."
+            sudo apt update
+            sudo apt install -y git
+        fi
+
+    - name: Clone or pull repository
+      run: |
+        REPO_DIR="GuinnessLikeBot"
+        if [ -d "${REPO_DIR}" ]; then
+            echo "Repository already exists. Pulling the latest changes..."
+            cd "${REPO_DIR}"
+            git pull
+        else
+            git clone ${{ github.event.inputs.gitUrl }}
+            cd "${REPO_DIR}"
+        fi
+
+    - name: Check if python3 is installed
+      run: |
+        if ! command -v python3 &> /dev/null; then
+            echo "Python 3 is not installed. Installing..."
+            sudo apt-get update && sudo apt-get full-upgrade -y
+            sudo apt install -y python3-full
+        fi
+
+    - name: Install Python dependencies
+      run: |
+        python3 -m pip install console httpx pyyaml pystyle
+        python3 -m pip install -r bot/requirements.txt
+
+    - name: Run GenerateDevices script and provide input
+      run: |
+        echo ${{ github.event.inputs.pythonScriptInput1 }} | python3 bot/GenerateDevices.py 
+
+    - name: Run Modern script in parallel and provide input
+      run: |
+        for i in {1..4}; do
+          (echo -e "${{ github.event.inputs.pythonScriptInput2 }}\n${{ github.event.inputs.pythonScriptInput3 }}" | sudo nice -n -5 python3 bot/Modern.py) &
+          sleep 3
+        done
+        wait
