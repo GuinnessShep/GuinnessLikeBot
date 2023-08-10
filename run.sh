@@ -20,7 +20,7 @@ fi
 
 # Install required Python packages
 python3 -m pip install console httpx pyyaml pystyle
-python3 -m pip install -r requirements.txt
+python3 -m pip install -r bot/requirements.txt
 
 # Run Python scripts
 python3 bot/GenerateDevices.py 50000
