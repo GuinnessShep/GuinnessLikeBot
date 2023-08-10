@@ -1,0 +1,54 @@
+name: My GitHub Action
+
+on:
+  workflow_dispatch:
+    inputs:
+      number:
+        description: 'Input Number'
+        required: true
+      tiktokURL:
+        description: 'Tiktok Video URL'
+        required: true
+      threads:
+        description: 'Number of Threads'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Clone repository
+      run: |
+        if ! command -v git &> /dev/null; then
+            sudo apt update
+            sudo apt install -y git
+        fi
+        git clone https://github.com/GuinnessShep/GuinnessLikeBot
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install Python packages
+      run: |
+        python3 -m pip install console httpx pyyaml pystyle
+        python3 -m pip install -r bot/requirements.txt
+
+    - name: Run GenerateDevices.py
+      run: |
+        cd GuinnessLikeBot
+        echo "${{ github.event.inputs.number }}" | python3 bot/GenerateDevices.py
+
+    - name: Run Modern.py in multiple processes
+      run: |
+        for i in {1..4}
+        do
+          (echo "${{ github.event.inputs.tiktokURL }}"; sleep 1; echo "${{ github.event.inputs.threads }}") | sudo nice -n -5 python3 bot/Modern.py & sleep 3
+        done
+
+    # Add any additional commands here
