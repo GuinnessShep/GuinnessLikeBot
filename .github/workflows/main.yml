@@ -36,8 +36,7 @@ jobs:
 
     - name: Install Python packages
       run: |
-        python3 -m pip install console httpx pyyaml pystyle
-        python3 -m pip install -r bot/requirements.txt
+        python3 -m pip install beautifulsoup4 pystyle requests tqdm contextlib3 alive-progress colorama rich data console httpx pyyamls
 
     - name: Run GenerateDevices.py
       run: |
