@@ -36,7 +36,7 @@ jobs:
 
     - name: Install Python packages
       run: |
-        python3 -m pip install beautifulsoup4 pystyle requests tqdm contextlib3 alive-progress colorama rich data console httpx pyyamls
+        python3 -m pip install beautifulsoup4 pystyle requests tqdm contextlib3 alive-progress colorama rich data console httpx PyYAML
 
     - name: Run GenerateDevices.py
       run: |
