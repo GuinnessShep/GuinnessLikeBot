@@ -1,8 +1,3 @@
-from concurrent.futures import ThreadPoolExecutor
-import threading
-from urllib.parse import urlencode
-import base64
-from pystyle import *
 import os
 import sys
 import ssl
@@ -13,11 +8,13 @@ import threading
 import requests
 import hashlib
 import json
+from urllib.parse import urlencode
+from pystyle import *
 from console.utils import set_title
+from concurrent.futures import ThreadPoolExecutor
 from urllib3.exceptions import InsecureRequestWarning
 from http import cookiejar
 
-# Define the BlockCookies class
 class BlockCookies(cookiejar.CookiePolicy):
     return_ok = set_ok = domain_return_ok = path_return_ok = lambda self, *args, **kwargs: False
     netscape = True
@@ -30,13 +27,11 @@ r = requests.Session()
 r.cookies.set_policy(BlockCookies())
 
 __domains = ["api22-core-c-useast1a.tiktokv.com", "api19-core-c-useast1a.tiktokv.com",
-                          "api16-core-c-useast1a.tiktokv.com", "api21-core-c-useast1a.tiktokv.com"]
+             "api16-core-c-useast1a.tiktokv.com", "api21-core-c-useast1a.tiktokv.com"]
 __devices = ["SM-G9900", "SM-A136U1", "SM-M225FV", "SM-E426B", "SM-M526BR", "SM-M326B", "SM-A528B",
-                          "SM-F711B", "SM-F926B", "SM-A037G", "SM-A225F", "SM-M325FV", "SM-A226B", "SM-M426B",
-                          "SM-A525F", "SM-N976N"]
+             "SM-F711B", "SM-F926B", "SM-A037G", "SM-A225F", "SM-M325FV", "SM-A226B", "SM-M426B",
+             "SM-A525F", "SM-N976N"]
 __versions = ["190303", "190205", "190204", "190103", "180904", "180804", "180803", "180802",  "270204"]
-
-# Define the Gorgon class
 class Gorgon:
 	def __init__(self,params:str,data:str,cookies:str,unix:int)->None:self.unix=unix;self.params=params;self.data=data;self.cookies=cookies
 	def hash(self,data:str)->str:
@@ -66,7 +61,7 @@ class Gorgon:
 		if len(tmp_string)<2:tmp_string='0'+tmp_string
 		return tmp_string
 	def reverse(self,num):tmp_string=self.hex_string(num);return int(tmp_string[1:]+tmp_string[:1],16)
-# Define the send function
+
 def send(__device_id, __install_id, cdid, openudid):
     global reqs, _lock, success, fails, rps, rpm
     for x in range(10):
@@ -138,7 +133,6 @@ def send(__device_id, __install_id, cdid, openudid):
         except Exception as e:
             pass
 
-# Define the rpsm_loop function
 def rpsm_loop():
     global rps, rpm
     while True:
@@ -147,7 +141,7 @@ def rpsm_loop():
         rps = round((reqs - initial) / 1.5, 1)
         rpm = round(rps * 60, 1)
 
-# Define the fetch_proxies function
+
 def fetch_proxies():
     url_list =[
         "https://raw.githubusercontent.com/yemixzy/proxy-list/main/proxy-list/data.txt",
@@ -155,9 +149,12 @@ def fetch_proxies():
         "https://raw.githubusercontent.com/rdavydov/proxy-list/main/proxies/http.txt",
         "https://raw.githubusercontent.com/rdavydov/proxy-list/main/proxies/socks4.txt",
         "https://raw.githubusercontent.com/rdavydov/proxy-list/main/proxies/socks5.txt"
+        
     ]
-    for url in url_list:
-        response = requests.get(url=url)
+    for url in url_list :
+        response = requests.get(
+            url=url
+        )
         if response.ok:
             with open("proxies.txt", "a+") as f:
                 f.write(response.text)
@@ -165,38 +162,38 @@ def fetch_proxies():
         else:
             pass
 
-# Rest of the code remains the same...
-
 if __name__ == "__main__":
     with open('devices.txt', 'r') as f:
         devices = f.read().splitlines()
-
+    
     with open('config.json', 'r') as f:
         config = json.load(f)
+
     if config["proxy"]['proxyscrape']:
         fetch_proxies()
+
     proxy_format = f'{config["proxy"]["proxy-type"].lower()}://{config["proxy"]["credential"]+"@" if config["proxy"]["auth"] else ""}' if config['proxy']['use-proxy'] else ''
+    
     if config['proxy']['use-proxy']:
         with open('proxies.txt', 'r') as f:
             proxies = f.read().splitlines()
+
     os.system("cls" if os.name == "nt" else "clear")
     set_title("Guinness Shepherd")
-    txt = """\n\n
-    TikTok Viewbot by @guinnessgshep \n"""
-    print(
-        Colorate.Vertical(
-            Colors.DynamicMIX((Col.light_blue, Col.purple)), Center.XCenter(txt)
-        )
-    )
+
+    txt = "\n\nTikTok Viewbot by @guinnessgshep \n"
+    print(Colorate.Vertical(Colors.DynamicMIX((Col.light_blue, Col.purple)), Center.XCenter(txt)))
 
     try:
-        link = str(Write.Input("\n\n            ? - Video Link > ", Colors.white_to_green, interval=0.0001))
+        video = input('Enter Video URL -> ')
+        num_threads = int(input('Threads -> '))
+
         __aweme_id = str(
-            re.findall(r"(\d{18,19})", link)[0]
-            if len(re.findall(r"(\d{18,19})", link)) == 1
+            re.findall(r"(\d{18,19})", video)[0]
+            if len(re.findall(r"(\d{18,19})", video)) == 1
             else re.findall(
                 r"(\d{18,19})",
-                requests.head(link, allow_redirects=True, timeout=5).url
+                requests.head(video, allow_redirects=True, timeout=5).url
             )[0]
         )
     except:
@@ -216,7 +213,10 @@ if __name__ == "__main__":
 
     threading.Thread(target=rpsm_loop).start()
 
-    device = random.choice(devices)
-    if eval(base64.b64decode("dGhyZWFkaW5nLmFjdGl2ZV9jb3VudCgpIDwgMTAwICMgZG9uJ3QgY2hhbmdlIGNvdW50IG9yIHUgd2lsbCBraWxsIGRldmljZXMgYW5kIHJ1aW4gZnVuIGZvciBvdGhlcnM=")):
-        did, iid, cdid, openudid = device.split(':')
-        send_multiple_requests(did, iid, cdid, openudid, num_threads=num_threads)
+    def worker(device):
+        if threading.active_count() < 100:
+            did, iid, cdid, openudid = device.split(':')
+            send(did, iid, cdid, openudid)
+
+    with ThreadPoolExecutor(max_workers=num_threads) as executor:
+        executor.map(worker, devices)
