@@ -181,7 +181,8 @@ if __name__ == "__main__":
             proxies = f.read().splitlines()
 
     os.system("cls" if os.name == "nt" else "clear")
-    set_title("Guinness Shepherd")
+    print("\033]0;Guinness Shepherd\007")
+    #set_title("Guinness Shepherd")
 
     txt = "\n\nTikTok Viewbot by @guinnessgshep \n"
     print(Colorate.Vertical(Colors.DynamicMIX((Col.light_blue, Col.purple)), Center.XCenter(txt)))
