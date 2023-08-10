@@ -1,0 +1,13 @@
+beautifulsoup4
+pystyle
+requests
+tqdm
+contextlib3
+alive-progress
+colorama
+rich
+data
+console 
+httpx
+pyyaml
+pystyle
