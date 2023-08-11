@@ -32,13 +32,9 @@ ssl._create_default_https_context = ssl._create_unverified_context
 r = requests.Session()
 r.cookies.set_policy(BlockCookies())
 
+
 __domains = ["api22-core-c-useast1a.tiktokv.com", "api19-core-c-useast1a.tiktokv.com",
-             "api16-core-c-useast1a.tiktokv.com", "api21-core-c-useast1a.tiktokv.com",
-	     "api16-core-useast5.us.tiktokv.com", "api16-core-c-useast2a.tiktokv.com",
-	     "api16-core-baseline.tiktokv", "api16-core-c.tiktokv.com",
-	     "api31-core-q-useast1a.tiktokv.com", "api17-core-useast1a.tiktokv.com",
-	     "api3-core-useast1a.tiktokv.com", "api33-normal-c-useast1a.tiktokv.com",
-	     "api58-core-c-alisg.tiktokv.com", "api77-normal-c-useast1a.tiktokv.com"]
+             "api16-core-c-useast1a.tiktokv.com", "api21-core-c-useast1a.tiktokv.com"]
 
 __devices = ["SM-G9900", "SM-A136U1", "SM-M225FV", "SM-E426B", "SM-M526BR", "SM-M326B", 
              "SM-A528B", "SM-F711B", "SM-F926B", "SM-A037G", "SM-A225F", "SM-M325FV", 
