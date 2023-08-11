@@ -1,0 +1,87 @@
+import click
+import logging
+import time
+import random
+import requests
+import re
+import threading
+import json
+from urllib.parse import urlencode
+import hashlib
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+class Gorgon:
+    #... [The same Gorgon class as provided above]
+
+def send_request(device_id, install_id, cdid, openudid, video_id, domains, devices, versions, proxies=None):
+    global requests_counter, success_counter, fails_counter
+    for _ in range(10):
+        try:
+            params, headers = prepare_request_params_headers(device_id, install_id, cdid, openudid, video_id, domains, devices, versions)
+            response = send_http_request(params, headers, proxies)
+
+            requests_counter += 1
+            if response.json()['status_code'] == 0:
+                success_counter += 1
+            else:
+                fails_counter += 1
+        except Exception as e:
+            fails_counter += 1
+
+def prepare_request_params_headers(device_id, install_id, cdid, openudid, video_id, domains, devices, versions):
+    version = random.choice(versions)
+    params = urlencode({ /*... same parameters as above...*/ })
+    payload = f"item_id={video_id}&play_delta=1"
+    sig = Gorgon(params=params, cookies=None, data=None, unix=int(time.time())).get_value()
+
+    headers = {
+        'cookie': 'sessionid=90c38a59d8076ea0fbc01c8643efbe47',
+        'x-gorgon': sig['X-Gorgon'],
+        'x-khronos': sig['X-Khronos'],
+        'user-agent': 'okhttp/3.10.0.1'
+    }
+
+    return params, headers
+
+def send_http_request(params, headers, proxies):
+    return requests.post(
+        url=f"https://{random.choice(domains)}/aweme/v1/aweme/stats/?{params}",
+        data=params,
+        headers=headers,
+        verify=False,
+        proxies=proxies
+    )
+
+@click.command()
+@click.option('--video-link', prompt='Enter TikTok Video Link', help='TikTok video link or ID for which views will be generated.')
+def main(video_link):
+    global requests_counter, success_counter, fails_counter
+
+    # Initialize counters
+    requests_counter = 0
+    success_counter = 0
+    fails_counter = 0
+
+    domains = ["api22-core-c-useast1a.tiktokv.com", "api19-core-c-useast1a.tiktokv.com", /* ... other domains ... */]
+    devices = ["SM-G9900", "SM-A136U1", /* ... other devices ... */]
+    versions = ["190303", "190205", /* ... other versions ... */]
+
+    video_id = extract_video_id(video_link)
+
+    while True:
+        # For this example, I've just randomly selected one device. You can modify this as needed.
+        did, iid, cdid, openudid = random.choice(devices).split(':')
+        send_request(did, iid, cdid, openudid, video_id, domains, devices, versions)
+
+        # Logging the real-time information
+        logging.info(f"Total Requests: {requests_counter}, Success: {success_counter}, Fails: {fails_counter}")
+
+def extract_video_id(link):
+    try:
+        return re.findall(r"(\d{18,19})", link)[0]
+    except IndexError:
+        return requests.head(link, allow_redirects=True, timeout=5).url.split('/')[-1]
+
+if __name__ == "__main__":
+    main()
