@@ -33,8 +33,12 @@ r = requests.Session()
 r.cookies.set_policy(BlockCookies())
 
 
-__domains = ["api22-core-c-useast1a.tiktokv.com", "api19-core-c-useast1a.tiktokv.com",
-             "api16-core-c-useast1a.tiktokv.com", "api21-core-c-useast1a.tiktokv.com"]
+__domains = ["api22-core-c-useast1a.tiktokv.com",
+	     "api19-core-c-useast1a.tiktokv.com",
+             "api16-core-c-useast1a.tiktokv.com", 
+	     "api21-core-c-useast1a.tiktokv.com",
+	     "api16-normal-useast5.us.tiktokv.com",
+	    ]
 
 __devices = ["SM-G9900", "SM-A136U1", "SM-M225FV", "SM-E426B", "SM-M526BR", "SM-M326B", 
              "SM-A528B", "SM-F711B", "SM-F926B", "SM-A037G", "SM-A225F", "SM-M325FV", 
