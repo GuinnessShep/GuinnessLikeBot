@@ -1,3 +1,7 @@
+# desiger by Guinness
+from urllib.parse import urlencode
+import base64
+from pystyle import *
 import os
 import sys
 import ssl
@@ -8,18 +12,12 @@ import threading
 import requests
 import hashlib
 import json
-from urllib.parse import urlencode
-from concurrent.futures import ThreadPoolExecutor
+from console.utils import set_title
 from urllib3.exceptions import InsecureRequestWarning
 from http import cookiejar
-from colorama import init, Fore
-from alive_progress import alive_bar
 from rich.console import Console
 from rich.progress import track
-
-console = Console()
-
-init(autoreset=True)  # Initializes colorama for Windows
+from colorama import init, Fore
 
 class BlockCookies(cookiejar.CookiePolicy):
     return_ok = set_ok = domain_return_ok = path_return_ok = lambda self, *args, **kwargs: False
@@ -32,19 +30,12 @@ ssl._create_default_https_context = ssl._create_unverified_context
 r = requests.Session()
 r.cookies.set_policy(BlockCookies())
 
-
-__domains = ["api22-core-c-useast1a.tiktokv.com",
-	     "api19-core-c-useast1a.tiktokv.com",
-             "api16-core-c-useast1a.tiktokv.com", 
-	     "api21-core-c-useast1a.tiktokv.com",
-	     "api16-normal-useast5.us.tiktokv.com",
-	    ]
-
-__devices = ["SM-G9900", "SM-A136U1", "SM-M225FV", "SM-E426B", "SM-M526BR", "SM-M326B", 
-             "SM-A528B", "SM-F711B", "SM-F926B", "SM-A037G", "SM-A225F", "SM-M325FV", 
-             "SM-A226B", "SM-M426B", "SM-A525F", "SM-N976N"]
-
-__versions = ["190303", "190205", "190204", "190103", "180904", "180804", "180803", "180802", "270204"]
+__domains = ["api22-core-c-useast1a.tiktokv.com", "api19-core-c-useast1a.tiktokv.com",
+                          "api16-core-c-useast1a.tiktokv.com", "api21-core-c-useast1a.tiktokv.com"]
+__devices = ["SM-G9900", "SM-A136U1", "SM-M225FV", "SM-E426B", "SM-M526BR", "SM-M326B", "SM-A528B",
+                          "SM-F711B", "SM-F926B", "SM-A037G", "SM-A225F", "SM-M325FV", "SM-A226B", "SM-M426B",
+                          "SM-A525F", "SM-N976N"]
+__versions = ["190303", "190205", "190204", "190103", "180904", "180804", "180803", "180802",  "270204"]
 
 class Gorgon:
 	def __init__(self,params:str,data:str,cookies:str,unix:int)->None:self.unix=unix;self.params=params;self.data=data;self.cookies=cookies
