@@ -170,6 +170,57 @@ def send_request(__device_id, __install_id, cdid, openudid):
 
 
 def main():
+    with open('devices.txt', 'r') as f:
+        devices = f.read().splitlines()
+
+    with open('config.json', 'r') as f:
+        config = json.load(f)
+
+    if config["proxy"]['proxyscrape']:
+        fetch_proxies()
+
+    proxy_format = f'{config["proxy"]["proxy-type"].lower()}://{config["proxy"]["credential"]+"@" if config["proxy"]["auth"] else ""}' if config['proxy']['use-proxy'] else ''
+
+    if config['proxy']['use-proxy']:
+        with open('proxies.txt', 'r') as f:
+            proxies = f.read().splitlines()
+
+    os.system("cls" if os.name == "nt" else "clear")
+    set_title("Guinness Shepherd")
+
+    # Placeholder for text centering and coloring code
+    txt = """\n\nTikTok Viewbot by @guinnessgshep \n"""
+    print(txt)
+
+    try:
+        link = str(input("\n\n? - Video Link > "))
+        global __aweme_id
+        __aweme_id = str(
+            re.findall(r"(\d{18,19})", link)[0]
+            if len(re.findall(r"(\d{18,19})", link)) == 1
+            else re.findall(
+                r"(\d{18,19})",
+                requests.head(link, allow_redirects=True, timeout=5).url
+            )[0]
+        )
+    except:
+        os.system("cls" if os.name == "nt" else "clear")
+        input("x - Invalid link, try inputting video id only")
+        sys.exit(0)
+
+    os.system("cls" if os.name == "nt" else "clear")
+    print("loading...")
+
+    global _lock, reqs, success, fails, rpm, rps
+    _lock = threading.Lock()
+    reqs = 0
+    success = 0
+    fails = 0
+    rpm = 0
+    rps = 0
+
+    threading.Thread(target=rpsm_loop).start()
+
     while True:
         device = random.choice(devices)
         did, iid, cdid, openudid = device.split(':')
