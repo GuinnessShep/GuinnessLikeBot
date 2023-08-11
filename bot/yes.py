@@ -103,12 +103,25 @@ async def send(device):
             else:
                 headers_table.add_row("[bold red]Failure")
 
+def send_requests(device):
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(send(device))
+	 
 async def main():
     tasks = []
     for device in devices:
         task = asyncio.ensure_future(send(device))
         tasks.append(task)
+	    
+    threads = []
+    for device in devices:
+        thread = threading.Thread(target=send_requests, args=(device,))
+        thread.start()
+        threads.append(thread)
 
+    for thread in threads:
+        thread.join()
     await asyncio.gather(*tasks)
 
 if __name__ == "__main__":
