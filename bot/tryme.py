@@ -188,6 +188,7 @@ if __name__ == "__main__":
 
     #txt = "\n\nTikTok Viewbot by @guinnessgshep \n"
     #print(Colorate.Vertical(Colors.DynamicMIX((Col.light_blue, Col.purple)), Center.XCenter(txt)))
+    console = console()
     console.print("\n\n[bold blue on white]TikTok Viewbot by @guinnessgshep[/bold blue on white]\n")
     try:
         video = input('Enter Video URL -> ')
