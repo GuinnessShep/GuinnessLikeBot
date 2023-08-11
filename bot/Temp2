@@ -1,0 +1,62 @@
+import argparse
+import os
+import re
+import time
+import random
+import threading
+import requests
+import hashlib
+import json
+from urllib.parse import urlencode
+
+# For a modern command-line interface
+parser = argparse.ArgumentParser(description="Modern TikTok Viewbot")
+parser.add_argument("link", help="Video link or ID of the TikTok video.")
+parser.add_argument("--proxies", help="Path to proxy list.", default="proxies.txt")
+parser.add_argument("--devices", help="Path to device list.", default="devices.txt")
+parser.add_argument("--config", help="Path to configuration file.", default="config.json")
+args = parser.parse_args()
+
+
+class Gorgon:
+    # ... [same as provided]
+    # No change to Gorgon since its logic is the essence of the script.
+
+    
+def send(device_id, install_id, cdid, openudid):
+    # ... [similar to provided, but cleaned up]
+    # Some repeated code can be cleaned up and refactored.
+
+
+def display_status():
+    while True:
+        os.system("cls" if os.name == "nt" else "clear")
+        print(f"\n\n{'='*40}")
+        print(f"TikTok Viewbot Status")
+        print(f"{'='*40}\n")
+        print(f"Success: {success}")
+        print(f"Fails: {fails}")
+        print(f"Requests sent: {reqs}")
+        print(f"Requests per second: {rps:.1f}")
+        print(f"Requests per minute: {rpm:.1f}\n")
+        time.sleep(2)
+
+
+def rpsm_loop():
+    # ... [same as provided]
+    # This function is required to compute the rps and rpm.
+
+
+if __name__ == "__main__":
+    # Load devices and config
+    with open(args.devices, 'r') as f:
+        devices = f.read().splitlines()
+    
+    with open(args.config, 'r') as f:
+        config = json.load(f)
+    
+    # ... [same flow as provided, but tidied up]
+    # Setup and send requests in a loop.
+
+    # Now, rather than infinite sending, let's also display status
+    threading.Thread(target=display_status).start()
