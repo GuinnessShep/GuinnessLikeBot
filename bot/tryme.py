@@ -1,44 +1,41 @@
-import requests
-import random
-import time
-import threading
-import hashlib
+# desiger by Guinness
 from urllib.parse import urlencode
-from requests.cookies import cookiejar
+import base64
+from pystyle import *
+import os
+import sys
 import ssl
-
-requests.packages.urllib3.disable_warnings()
-ssl._create_default_https_context = ssl._create_unverified_context
-
+import re
+import time
+import random
+import threading
+import requests
+import hashlib
+import json
+from console.utils import set_title
+from urllib3.exceptions import InsecureRequestWarning
+from http import cookiejar
+from rich.console import Console
+from rich.progress import track
+from colorama import init, Fore
 
 class BlockCookies(cookiejar.CookiePolicy):
     return_ok = set_ok = domain_return_ok = path_return_ok = lambda self, *args, **kwargs: False
     netscape = True
     rfc2965 = hide_cookie2 = False
 
+requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
+ssl._create_default_https_context = ssl._create_unverified_context
 
-s = requests.Session()
-s.cookies.set_policy(BlockCookies())
+r = requests.Session()
+r.cookies.set_policy(BlockCookies())
 
-DOMAINS = [
-    "api22-core-c-useast1a.tiktokv.com", "api19-core-c-useast1a.tiktokv.com",
-    "api16-core-c-useast1a.tiktokv.com", "api21-core-c-useast1a.tiktokv.com"
-]
-
-DEVICES = [
-    "SM-G9900", "SM-A136U1", "SM-M225FV", "SM-E426B", "SM-M526BR", "SM-M326B",
-    "SM-A528B", "SM-F711B", "SM-F926B", "SM-A037G", "SM-A225F", "SM-M325FV",
-    "SM-A226B", "SM-M426B", "SM-A525F", "SM-N976N"
-]
-
-VERSIONS = ["190303", "190205", "190204", "190103", "180904", "180804", "180803", "180802", "270204"]
-
-devices = [f"{d}:{random.randint(100000000000,999999999999)}:{random.randint(100000000000,999999999999)}:{random.randint(100000000000,999999999999)}" for d in DEVICES]
-
-__aweme_id = 'your_aweme_id_here'
-reqs, success, fails, rps, rpm = 0, 0, 0, 0, 0
-_lock = threading.Lock()
-
+__domains = ["api22-core-c-useast1a.tiktokv.com", "api19-core-c-useast1a.tiktokv.com",
+                          "api16-core-c-useast1a.tiktokv.com", "api21-core-c-useast1a.tiktokv.com"]
+__devices = ["SM-G9900", "SM-A136U1", "SM-M225FV", "SM-E426B", "SM-M526BR", "SM-M326B", "SM-A528B",
+                          "SM-F711B", "SM-F926B", "SM-A037G", "SM-A225F", "SM-M325FV", "SM-A226B", "SM-M426B",
+                          "SM-A525F", "SM-N976N"]
+__versions = ["190303", "190205", "190204", "190103", "180904", "180804", "180803", "180802",  "270204"]
 
 class Gorgon:
     def __init__(self, params: str, data: str = None, cookies: str = None) -> None:
@@ -169,10 +166,10 @@ def send_request(__device_id, __install_id, cdid, openudid):
             continue
 
 
-def main():
+if __name__ == "__main__":
     with open('devices.txt', 'r') as f:
         devices = f.read().splitlines()
-
+    
     with open('config.json', 'r') as f:
         config = json.load(f)
 
@@ -180,38 +177,38 @@ def main():
         fetch_proxies()
 
     proxy_format = f'{config["proxy"]["proxy-type"].lower()}://{config["proxy"]["credential"]+"@" if config["proxy"]["auth"] else ""}' if config['proxy']['use-proxy'] else ''
-
+    
     if config['proxy']['use-proxy']:
         with open('proxies.txt', 'r') as f:
             proxies = f.read().splitlines()
 
     os.system("cls" if os.name == "nt" else "clear")
-    set_title("Guinness Shepherd")
+    print("\033]0;Guinness Shepherd\007")
+    #set_title("Guinness Shepherd")
 
-    # Placeholder for text centering and coloring code
-    txt = """\n\nTikTok Viewbot by @guinnessgshep \n"""
-    print(txt)
-
+    #txt = "\n\nTikTok Viewbot by @guinnessgshep \n"
+    #print(Colorate.Vertical(Colors.DynamicMIX((Col.light_blue, Col.purple)), Center.XCenter(txt)))
+    console.print("\n\n[bold blue on white]TikTok Viewbot by @guinnessgshep[/bold blue on white]\n")
     try:
-        link = str(input("\n\n? - Video Link > "))
-        global __aweme_id
+        video = input('Enter Video URL -> ')
+        num_threads = int(input('Threads -> '))
+
         __aweme_id = str(
-            re.findall(r"(\d{18,19})", link)[0]
-            if len(re.findall(r"(\d{18,19})", link)) == 1
+            re.findall(r"(\d{18,19})", video)[0]
+            if len(re.findall(r"(\d{18,19})", video)) == 1
             else re.findall(
                 r"(\d{18,19})",
-                requests.head(link, allow_redirects=True, timeout=5).url
+                requests.head(video, allow_redirects=True, timeout=5).url
             )[0]
         )
     except:
         os.system("cls" if os.name == "nt" else "clear")
-        input("x - Invalid link, try inputting video id only")
+        console.print("[red]x - Invalid link, try inputting video id only[/red]")
         sys.exit(0)
 
     os.system("cls" if os.name == "nt" else "clear")
-    print("loading...")
+    console.print("[bold yellow]Loading...[/bold yellow]")
 
-    global _lock, reqs, success, fails, rpm, rps
     _lock = threading.Lock()
     reqs = 0
     success = 0
@@ -221,11 +218,12 @@ def main():
 
     threading.Thread(target=rpsm_loop).start()
 
-    while True:
-        device = random.choice(devices)
-        did, iid, cdid, openudid = device.split(':')
-        threading.Thread(target=send_request, args=(did, iid, cdid, openudid)).start()
+    with alive_bar(len(devices), title='Processing', bar='smooth') as bar:
+        def worker(device):
+            if threading.active_count() < 100:
+                did, iid, cdid, openudid = device.split(':')
+                send(did, iid, cdid, openudid)
+            bar()
 
-
-if __name__ == "__main__":
-    main()
+        with ThreadPoolExecutor(max_workers=num_threads) as executor:
+            executor.map(worker, devices)
