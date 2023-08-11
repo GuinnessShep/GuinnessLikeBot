@@ -39,17 +39,13 @@ __domains = ["api22-core-c-useast1a.tiktokv.com", "api19-core-c-useast1a.tiktokv
 	     "api31-core-q-useast1a.tiktokv.com", "api17-core-useast1a.tiktokv.com",
 	     "api3-core-useast1a.tiktokv.com", "api33-normal-c-useast1a.tiktokv.com",
 	     "api58-core-c-alisg.tiktokv.com", "api77-normal-c-useast1a.tiktokv.com"]
-__devices = ["SM-G9900", "Pixel 4a", "OnePlus8T", "Moto G7", "Nokia 9 PureView", "HTC U12+", "LG G7 ThinQ", 
-             "Sony XZ3", "SM-A136U1", "Huawei P30", "Oppo F11 Pro", "Vivo V15 Pro", "ASUS_Z01RD", 
-             "SM-M225FV", "Mi 9", "Realme 6", "SM-E426B", "ZTE Axon 10 Pro", "Lenovo K10 Note", 
-             "Pixel 5", "OnePlus9R", "SM-M526BR", "Moto G8 Plus", "Nokia 8.1", "HTC U11", "SM-M326B", 
-             "LG V60 ThinQ", "Sony XZ2", "SM-A528B", "Huawei Mate 40 Pro", "Oppo Reno5 Pro", "Vivo X60 Pro", 
-             "SM-F711B", "ASUS_I001D", "SM-F926B", "Mi 11", "Realme 7 Pro", "SM-A037G", 
-             "ZTE Nubia Red Magic 5G", "Lenovo Z6 Pro", "SM-A225F", "Pixel 3a XL", "OnePlus7Pro", "Moto Z4", 
-             "SM-M325FV", "Nokia 7.2", "HTC 10", "LG G8 ThinQ", "Sony XZ1", "SM-A226B", "Huawei P20 Pro", 
-             "Oppo A53", "Vivo Z1 Pro", "ASUS_Z01QD", "SM-M426B", "Redmi Note 8 Pro", "Realme 5 Pro", 
-             "SM-A525F", "ZTE Blade 10", "Lenovo K9 Note", "Pixel 2 XL", "SM-N976N"]
-__versions = ["190303", "190205", "190204", "190103", "180904", "180804", "180803", "180802",  "270204"]
+
+__devices = ["SM-G9900", "SM-A136U1", "SM-M225FV", "SM-E426B", "SM-M526BR", "SM-M326B", 
+             "SM-A528B", "SM-F711B", "SM-F926B", "SM-A037G", "SM-A225F", "SM-M325FV", 
+             "SM-A226B", "SM-M426B", "SM-A525F", "SM-N976N"]
+
+__versions = ["190303", "190205", "190204", "190103", "180904", "180804", "180803", "180802", "270204"]
+
 class Gorgon:
 	def __init__(self,params:str,data:str,cookies:str,unix:int)->None:self.unix=unix;self.params=params;self.data=data;self.cookies=cookies
 	def hash(self,data:str)->str:
