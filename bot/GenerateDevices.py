@@ -1,8 +1,16 @@
 import random
 import uuid
+import sys
 
-# Ask the user how many lines they want to generate
-num_lines = int(input("How many lines do you want to generate? "))
+# Check if a command line argument is given
+if len(sys.argv) > 1:
+    try:
+        num_lines = int(sys.argv[1])
+    except ValueError:
+        print("The given argument is not a valid number. Using default input method.")
+        num_lines = int(input("How many lines do you want to generate? "))
+else:
+    num_lines = int(input("How many lines do you want to generate? "))
 
 with open("devices.txt", "w") as f:
     for _ in range(num_lines):
@@ -19,4 +27,4 @@ with open("devices.txt", "w") as f:
         # Write the generated values to the file
         f.write(f"{num1}:{num2}:{id}:{hex}\n")
 
-print("File 'devices.txt' has been successfully generated with random data.")
+print("File 'devices.txt' has been successfully generated.")
