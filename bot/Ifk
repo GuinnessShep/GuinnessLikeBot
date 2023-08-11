@@ -1,0 +1,85 @@
+import httpx
+import random
+import time
+import re
+import threading
+import asyncio
+import json
+from urllib.parse import urlencode
+
+# Terminal colors
+class Col:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+# Gorgon and essential methods remain unchanged...
+
+# Asynchronous request sending
+async def send_async(client, device):
+    global success, fails, rps, rpm, reqs
+    __device_id, __install_id, cdid, openudid = device.split(':')
+
+    for _ in range(10):
+        version = random.choice(__versions)
+        params = {
+            # ... [Same parameters as before]
+        }
+        headers = {
+            'cookie':'sessionid=90c38a59d8076ea0fbc01c8643efbe47',
+            'x-gorgon': Gorgon(params=urlencode(params), data=None, cookies=None, unix=int(time.time())).get_value()['X-Gorgon'],
+            'x-khronos': str(int(time.time())),
+            'user-agent':'okhttp/3.10.0.1'
+        }
+        url = f"https://{random.choice(__domains)}/aweme/v1/aweme/stats/?{urlencode(params)}"
+        data = {'item_id': __aweme_id, 'play_delta': 1}
+
+        try:
+            response = await client.post(url, headers=headers, json=data)
+            reqs += 1
+
+            if response.json()['status_code'] == 0:
+                success += 1
+            else:
+                fails += 1
+        except:
+            fails += 1
+
+def display_stats():
+    while True:
+        print(f"{Col.OKGREEN}Success: {success} {Col.FAIL}Fails: {fails} {Col.OKCYAN}RPS: {rps} {Col.OKBLUE}RPM: {rpm}{Col.ENDC}")
+        time.sleep(1)
+
+async def main():
+    global rps, rpm
+
+    with open('devices.txt', 'r') as f:
+        devices = f.readlines()
+
+    print(f"{Col.HEADER}Starting TikTok Viewbot...{Col.ENDC}")
+    tasks = []
+
+    async with httpx.AsyncClient() as client:
+        for device in devices:
+            tasks.append(send_async(client, device))
+
+        # Display statistics
+        threading.Thread(target=display_stats).start()
+
+        # Gather all tasks and run them
+        await asyncio.gather(*tasks)
+
+if __name__ == '__main__':
+    try:
+        link = input(f"{Col.OKCYAN}Enter Video Link: {Col.ENDC}")
+        __aweme_id = re.findall(r"(\d{18,19})", link)[0]
+        asyncio.run(main())
+    except Exception as e:
+        print(f"{Col.FAIL}Error: {e}{Col.ENDC}")
+
