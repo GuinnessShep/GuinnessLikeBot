@@ -3,6 +3,7 @@ from urllib.parse import urlencode
 import base64
 from pystyle import *
 import os
+import console
 import sys
 import ssl
 import re
