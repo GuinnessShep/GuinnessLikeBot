@@ -124,6 +124,17 @@ async def main():
         thread.join()
     await asyncio.gather(*tasks)
 
+def process_devices():
+    with alive_bar(len(devices), title='Processing', bar='smooth') as bar:
+        def worker(device):
+            if threading.active_count() < 100:
+                did, iid, cdid, openudid = device.strip().split(':')
+                send(did, iid, cdid, openudid)
+            bar()
+
+        with ThreadPoolExecutor(max_workers=num_threads) as executor:
+            executor.map(worker, devices)
+		
 if __name__ == "__main__":
     with open('devices.txt', 'r') as f:
         devices = f.readlines()
@@ -163,7 +174,7 @@ if __name__ == "__main__":
     console.print("[bold yellow]Loading...[/bold yellow]")
 
     reqs, success, fails, rpm, rps = 0, 0, 0, 0, 0
-    threading.Thread(target=rpsm_loop).start()
+    threading.Thread(target=process_devices).start()
 
     with alive_bar(len(devices), title='Processing', bar='smooth') as bar:
         def worker(device):
