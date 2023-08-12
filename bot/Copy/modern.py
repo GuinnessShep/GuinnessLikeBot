@@ -47,67 +47,38 @@ __devices = ["SM-G9900", "SM-A136U1", "SM-M225FV", "SM-E426B", "SM-M526BR", "SM-
 __versions = ["190303", "190205", "190204", "190103", "180904", "180804", "180803", "180802", "270204"]
 
 class Gorgon:
-    def __init__(self, params: str, data: str = None, cookies: str = None) -> None:
-        self.params = params
-        self.data = data
-        self.cookies = cookies
+	def __init__(self,params:str,data:str=None,cookies:str=None)->None:self.params=params;self.data=data;self.cookies=cookies
 
-    def _hash(self, data: str) -> str:
-        return hashlib.md5(data.encode()).hexdigest()
+	def _hash(self,data:str)->str:
+		return hashlib.md5(data.encode()).hexdigest()
 
-    def _calc_gorgon(self) -> str:
-        gorgon = self._hash(self.params)
-        gorgon += self._hash(self.data) if self.data else "0" * 32
-        gorgon += self._hash(self.cookies) if self.cookies else "0" * 32
-        gorgon += "0" * 32
-        return gorgon
+	def _calc_gorgon(self)->str:gorgon=self._hash(self.params);gorgon=gorgon+self._hash(self.data)if self.data else gorgon+"0"*32;gorgon=gorgon+self._hash(self.cookies)if self.cookies else gorgon+"0"*32;gorgon=gorgon+"0"*32;return gorgon
 
-    def get_value(self):
-        return self._encrypt(self._calc_gorgon())
+	def get_value(self):
+		return self._encrypt(self._calc_gorgon())
 
-    def _encrypt(self, data: str) -> dict:
-        unix = int(time.time())
-        len_key = 0x14
-        key = [
-            0xDF, 0x77, 0xB9, 0x40, 0xB9, 0x9B, 0x84, 0x83,
-            0xD1, 0xB9, 0xCB, 0xD1, 0xF7, 0xC2, 0xB9, 0x85,
-            0xC3, 0xD0, 0xFB, 0xC3,
-        ]
-        param_list = []
-        for i in range(0, 12, 4):
-            temp = data[8 * i : 8 * (i + 1)]
-            for j in range(4):
-                H = int(temp[j * 2 : (j + 1) * 2], 16)
-                param_list.append(H)
-        param_list.extend([0x0, 0x6, 0xB, 0x1C])
-        H = int(hex(unix), 16)
-        param_list.append((H & 0xFF000000) >> 24)
-        param_list.append((H & 0x00FF0000) >> 16)
-        param_list.append((H & 0x0000FF00) >> 8)
-        param_list.append((H & 0x000000FF) >> 0)
-        eor_result_list = []
-        for A, B in zip(param_list, key):
-            eor_result_list.append(A ^ B)
-        for i in range(len_key):
-            C = self._reverse(eor_result_list[i])
-            D = eor_result_list[(i + 1) % len_key]
-            E = C ^ D
-            F = self._rbit(E)
-            H = ((F ^ 0xFFFFFFFF) ^ len_key) & 0xFF
-            eor_result_list[i] = H
-        result = "".join([self._hex_string(param) for param in eor_result_list])
-        return {"X-Gorgon": ("0404b0d30000" + result), "X-Khronos": str(unix)}
+	def _encrypt(self,data:str)->dict:
+		unix=int(time.time());len_key=0x14;key=[0xDF,0x77,0xB9,0x40,0xB9,0x9B,0x84,0x83,0xD1,0xB9,0xCB,0xD1,0xF7,0xC2,0xB9,0x85,0xC3,0xD0,0xFB,0xC3];param_list=[]
+		for i in range(0,12,4):
+			temp=data[8*i:8*(i+1)]
+			for j in range(4):H=int(temp[j*2:(j+1)*2],16);param_list.append(H)
+		param_list.extend([0x0,0x6,0xB,0x1C]);H=int(hex(unix),16);param_list.append((H&0xFF000000)>>24);param_list.append((H&0x00FF0000)>>16);param_list.append((H&0x0000FF00)>>8);param_list.append((H&0x000000FF)>>0);eor_result_list=[]
+		for A,B in zip(param_list,key):eor_result_list.append(A^B)
+		for i in range(len_key):C=self._reverse(eor_result_list[i]);D=eor_result_list[(i+1)%len_key];E=C^D;F=self._rbit(E);H=((F^0xFFFFFFFF)^len_key)&0xFF;eor_result_list[i]=H
+		result="".join([self._hex_string(param) for param in eor_result_list])
+		return {"X-Gorgon": ("0404b0d30000"+result), "X-Khronos": str(unix)}
 
-    def _rbit(self, num):
-        result = "".join(reversed(bin(num)[2:].zfill(8)))
-        return int(result, 2)
+	def _rbit(self,num):
+		result="";tmp_string=bin(num)[2:].zfill(8)
+		for i in range(8):result=result+tmp_string[7-i]
+		return int(result,2)
 
-    def _hex_string(self, num):
-        return hex(num)[2:].zfill(2)
+	def _hex_string(self,num):
+		tmp_string=hex(num)[2:]
+		if len(tmp_string)<2:tmp_string='0'+tmp_string
+		return tmp_string
 
-    def _reverse(self, num):
-        tmp_string = self._hex_string(num)
-        return int(tmp_string[1:] + tmp_string[:1], 16)
+	def _reverse(self,num):tmp_string=self._hex_string(num);return int(tmp_string[1:]+tmp_string[:1],16)
 
 def send(__device_id, __install_id, cdid, openudid):
     global reqs, _lock, success, fails, rps, rpm
