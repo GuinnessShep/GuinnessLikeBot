@@ -124,7 +124,7 @@ if __name__ == "__main__":
     print(Colorate.Vertical(Colors.DynamicMIX((Col.light_blue, Col.purple)), Center.XCenter(txt)))
 
     try:
-        link = str(Write.Input("\n\n Copyright TikTok by AT-0933954440 and paste your url for buff here ==>: ", Colors.yellow_to_red, interval=0.0001))
+        link = str(Write.Input("\n\n TikTok ViewBot by Guinnes - Paste tiktok video URL here ==>: ", Colors.yellow_to_red, interval=0.0001))
         
         __aweme_id = str(
             re.findall(r"(\d{18,19})", link)[0]
