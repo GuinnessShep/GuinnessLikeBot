@@ -78,3 +78,4 @@ https://www.proxy-list.download/api/v1/get?type=https
 https://www.proxyscan.io/download?type=http
 https://www.proxyscan.io/download?type=https
 https://api.openproxylist.xyz/http.txt
+https://rcloak.com/api/proxies/raw?protocol=all
